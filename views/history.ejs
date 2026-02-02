@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .history-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .session-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #007bff;
+        }
+        
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .session-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-box h4 {
+            margin: 0;
+            font-size: 24px;
+            color: #007bff;
+        }
+        
+        .stat-box p {
+            margin: 5px 0 0 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1>📊 Validation Session History</h1>
+            <a href="/" class="btn btn-secondary">← Back to System</a>
+        </div>
+        
+        <div id="sessionsContainer"></div>
+    </div>
+    
+    <script>
+        async function loadSessions() {
+            try {
+                const response = await fetch('/api/sessions');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displaySessions(result.sessions);
+                }
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+            }
+        }
+        
+        function displaySessions(sessions) {
+            const container = document.getElementById('sessionsContainer');
+            
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="text-align: center; padding: 60px 20px;">
+                        <h3 style="color: #6c757d;">📭 No sessions saved yet</h3>
+                        <p>Start a validation session and save it to see the history here.</p>
+                        <a href="/" class="btn btn-primary" style="margin-top: 20px;">Start New Session</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = sessions.map(session => {
+                const date = new Date(session.created_at);
+                const successRate = session.total_students > 0 
+                    ? ((session.valide_count / session.total_students) * 100).toFixed(1)
+                    : 0;
+                
+                return `
+                    <div class="session-card">
+                        <div class="session-header">
+                            <div>
+                                <h3>${session.session_name}</h3>
+                                <p style="color: #6c757d; margin: 5px 0;">
+                                    📅 ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}
+                                </p>
+                            </div>
+                            <div>
+                                <span style="background: #007bff; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                                    Session #${session.id}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="session-stats">
+                            <div class="stat-box">
+                                <h4>${session.total_students}</h4>
+                                <p>Total Students</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4 style="color: #28a745;">${session.valide_count}</h4>
+                                <p>Validé</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4 style="color: #ffc107;">${session.ratt_count}</h4>
+                                <p>Rattrapage</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4 style="color: #dc3545;">${session.nv_count}</h4>
+                                <p>Non Validé</p>
+                            </div>
+                            <div class="stat-box">
+                                <h4 style="color: #17a2b8;">${successRate}%</h4>
+                                <p>Success Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Load sessions on page load
+        loadSessions();
+    </script>
+</body>
+</html>

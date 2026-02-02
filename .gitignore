@@ -1,0 +1,36 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Uploads
+public/uploads/photos/*
+!public/uploads/photos/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Build
+dist/
+build/
+
+# PM2
+.pm2/

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Student Validation System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Student Validation System</h1>
+            <p>Professional Grade Management - Node.js Edition</p>
+            <nav class="main-nav">
+                <a href="/" class="nav-btn <%= page === 'validation' ? 'active' : '' %>">🏠 Validation</a>
+                <a href="/inscription" class="nav-btn <%= page === 'inscription' ? 'active' : '' %>">➕ Register Student</a>
+                <a href="/students" class="nav-btn <%= page === 'students' ? 'active' : '' %>">👥 All Students</a>
+                <a href="/history" class="nav-btn <%= page === 'history' ? 'active' : '' %>">📊 History</a>
+            </nav>
+        </header>
+
+        <% if (success_message) { %>
+            <div class="alert alert-success">
+                <%= success_message %>
+            </div>
+        <% } %>
+
+        <% if (error_message) { %>
+            <div class="alert alert-error">
+                <%= error_message %>
+            </div>
+        <% } %>
+
+        <%- body %>
+    </div>
+</body>
+</html>
