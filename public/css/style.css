@@ -203,8 +203,9 @@ header p {
 
 /* Buttons */
 .btn {
+  margin-top: 8px;
   padding: 12px 24px;
-  border: none;
+  border: solid transparent;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
