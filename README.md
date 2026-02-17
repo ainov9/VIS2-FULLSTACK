@@ -450,10 +450,12 @@ Optional enhancements:
 
 ---
 
-**Built with ❤️ for modern education**
+** for modern education**
 **Version 1.0 - Node.js Edition**
 
 **Happy Coding! 🚀**
-#   V I S 2 - F U L L S T A C K  
- #   v 2 d a t a v i s  
+#   V I S 2 - F U L L S T A C K 
+ 
+ #   v 2 d a t a v i s 
+ 
  
